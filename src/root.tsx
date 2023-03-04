@@ -9,7 +9,16 @@ import {
   Scripts,
   ErrorBoundary,
 } from 'solid-start';
-import { Suspense } from 'solid-js';
+import { createSignal, Suspense } from 'solid-js';
+
+const [markdown, setMarkdown] = createSignal(
+  `# Template
+  - Item 1
+  - Item 2
+  - Item 3
+  - Item 4
+  `
+  );
 
 export default function Root() {
   return (
@@ -31,3 +40,5 @@ export default function Root() {
     </Html>
   );
 }
+
+export { markdown, setMarkdown}
