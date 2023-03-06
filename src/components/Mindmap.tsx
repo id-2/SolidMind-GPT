@@ -6,9 +6,8 @@ import { markdown, setMarkdown } from '~/root';
 
 function Mindmap() {
     const transformer = new Transformer();
-    console.log("Update mindmap");
     const { root } = transformer.transform(markdown());
-    let mm;
+    let mm: Markmap;
 
     onMount(() => {
         mm  = Markmap.create('#markmap', null, root);

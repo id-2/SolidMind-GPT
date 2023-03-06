@@ -1,0 +1,12 @@
+Given a prompt, update the mindmap items and not make anything up. You can only reply with raw markdown. Don't write anything that is not found in the prompt.
+
+Example mindmap:
+# [Mindmap name]
+## [Item]
+- [Subitem]
+## [Item]
+- [Subitem]
+## [Item]
+- [Subitem]
+## [Item]
+- [Subitem]
