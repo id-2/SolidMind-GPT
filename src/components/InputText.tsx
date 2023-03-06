@@ -24,10 +24,10 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 const [chats,setChats] = createStore([]);
-const addChat = (content) => {
+const addChat = (text:string) => {
   setChats(
     produce((chats) => {
-      chats.push({ role: "user", content: system_prompt });
+      setChats([...chats(), { role: "user", content: text }]);
     }),
   );
 };
@@ -44,18 +44,21 @@ const addChat = (content) => {
 
 const inputText: Component = () => {
 
-  const requestHandler = async () => {
-    const textarea = document.querySelector('#inputField') as HTMLInputElement
-    const completion = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo-0301",
-      temperature: 0,
-      messages: messagesToSend
-    });
+  // const requestHandler = async () => {
+  //   const textarea = document.querySelector('#inputField') as HTMLInputElement
+  //   const completion = await openai.createChatCompletion({
+  //     model: "gpt-3.5-turbo-0301",
+  //     temperature: 0,
+  //     messages: [
+  //           { role: "system", content: system_prompt},
+  //           { role: "user", content: `Prompt: ${input_prompt}`},
+  //         ]
+  //   });
     
-    console.log(completion.data.choices[0].message);
-    setMarkdown(textarea.value)
-    console.log(markdown())
-  }
+  //   console.log(completion.data.choices[0].message);
+  //   setMarkdown(textarea.value)
+  //   console.log(markdown())
+  // }
 
   return (
     <div class="form-control">
