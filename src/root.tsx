@@ -10,6 +10,9 @@ import {
   ErrorBoundary,
 } from 'solid-start';
 import { createSignal, Suspense } from 'solid-js';
+import { inject } from '@vercel/analytics';
+
+inject();
 
 const [markdown, setMarkdown] = createSignal(
   `# Mindmap example
