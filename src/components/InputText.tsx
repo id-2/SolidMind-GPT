@@ -123,18 +123,16 @@ const inputText: Component = () => {
 
   return (
     <div class="form-control">
-      <div class="flex my-5">
-        <div class="input-group w-3/5">
-          <input id="gptInput" type="text" placeholder="What is on your mind…" class="input input-bordered grow"/>
-          <button id="submitRequest" class="btn" onClick={() => requestHandler()}>Generate</button>
+      <div class="flex my-3 md:my-5 flex-col md:flex-row">
+        <div class="input-group lg:w-4/5">
+          <input id="gptInput" type="text" placeholder="What is on your mind…" class="input input-bordered input-sm md:input-md grow"/>
+          <button id="submitRequest" class="btn btn-sm md:btn-md" onClick={() => requestHandler()}>Generate</button>
         </div>
-        <label class="label cursor-pointer w-1/5 mx-5 justify-center">
-          <span class="label-text mr-5">Edit mindmap</span> 
-          <input type="checkbox" id="editToggle" class="toggle toggle-primary toggle-lg" onClick={() => toggleEditArea()}/>
-        </label>
-        <div class="input-group w-1/5">
-          <button class="btn btn-primary grow" onClick={() => saveMindmap()}>Save</button>
-          <button class="btn btn-primary grow" onClick={() => resetMindmap()}>Reset</button>
+  
+        <div class="input-group lg:w-1/5 mt-3 md:mt-0 ml-0 md:ml-5">
+          <button class="btn btn-primary btn-sm md:btn-md grow" onClick={() => saveMindmap()}>Save</button>
+          <input type="checkbox" id="editToggle" class="toggle toggle-primary h-8 md:h-12 rounded-none" onClick={() => toggleEditArea()}/>
+          <button class="btn btn-primary btn-sm md:btn-md grow" onClick={() => resetMindmap()}>Reset</button>
         </div>
       </div>
       
