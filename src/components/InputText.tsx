@@ -47,6 +47,7 @@ const inputText: Component = () => {
       messages: chats
     });
 
+    console.log(completion);
     addChat('assistant', completion.data.choices[0].message.content);
     setMarkdown(completion.data.choices[0].message.content);
 
