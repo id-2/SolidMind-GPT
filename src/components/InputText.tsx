@@ -32,8 +32,6 @@ const inputText: Component = () => {
     const chatsFromLocalStorage = JSON.parse(localStorage.getItem('savedChats'))
     if (chatsFromLocalStorage) {
       setChats(chatsFromLocalStorage)
-      console.log("Chats from local storage")
-      console.log(chatsFromLocalStorage)
     }
   }
 
@@ -52,14 +50,12 @@ const inputText: Component = () => {
     }
 
     addChat('assistant', gptInput.value)
-    console.log(chats);
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo-0301",
       temperature: 0,
       messages: chats
     });
 
-    console.log(completion);
     addChat('assistant', completion.data.choices[0].message.content);
     setMarkdown(completion.data.choices[0].message.content);
 
@@ -113,9 +109,6 @@ const inputText: Component = () => {
     setChats([{ role: 'system', content: system_prompt}]);
     updateEditArea();
     localStorage.clear()
-
-    console.log(chats);
-    console.log(markdown());
   }
 
   const saveMindmap = () => {

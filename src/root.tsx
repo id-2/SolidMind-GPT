@@ -29,8 +29,6 @@ if (typeof window !== 'undefined') {
   const mindmapFromLocalStorage = JSON.parse(localStorage.getItem('savedMindmap'))
   if (mindmapFromLocalStorage) {
     setMarkdown(mindmapFromLocalStorage)
-    console.log("Mindmap from local storage")
-    console.log(mindmapFromLocalStorage)
   }
 }
 
