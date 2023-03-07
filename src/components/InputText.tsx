@@ -1,11 +1,11 @@
 import { Component, createResource } from 'solid-js';
 import { markdown, setMarkdown } from '~/root';
-import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from 'openai';
+import { Configuration, OpenAIApi } from 'openai';
 import { createStore, produce } from 'solid-js/store';
 
-let input_prompt = "Create a mindmap called brainstorm with the items business, technology, social and marketing";
-const system_prompt = `
-Given a prompt, update the mindmap items and not make anything up. You can only reply with raw markdown. Don't write anything that is not found in the prompt.
+// const input_prompt = "Create a mindmap called brainstorm with the items business, technology, social and marketing";
+const system_prompt = 
+`Given a prompt, update the mindmap items and not make anything up. You can only reply with raw markdown. Don't write anything that is not found in the prompt.
 
 Example mindmap:
 # [Mindmap name]
@@ -23,15 +23,6 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-const [chats,setChats] = createStore([]);
-const addChat = (text:string) => {
-  setChats(
-    produce((chats) => {
-      setChats([...chats(), { role: "user", content: text }]);
-    }),
-  );
-};
-
 // const [messagesToSend,setmessagesToSend] = createStore(
 //   [
 //     { role: "system", content: system_prompt},
@@ -43,22 +34,29 @@ const addChat = (text:string) => {
 // { role: "user", content: `Prompt: ${input_prompt}`})
 
 const inputText: Component = () => {
+  const [chats,setChats] = createStore([
+    { role: "system", content: system_prompt}
+  ]);
 
-  // const requestHandler = async () => {
-  //   const textarea = document.querySelector('#inputField') as HTMLInputElement
-  //   const completion = await openai.createChatCompletion({
-  //     model: "gpt-3.5-turbo-0301",
-  //     temperature: 0,
-  //     messages: [
-  //           { role: "system", content: system_prompt},
-  //           { role: "user", content: `Prompt: ${input_prompt}`},
-  //         ]
-  //   });
+  const addChat = (text:string) => {
+    setChats([...chats, { role: "user", content: text }]);
+  }
+
+  const requestHandler = async () => {
+    const textarea = document.querySelector('#inputField') as HTMLInputElement
+    addChat(textarea.value)
+    console.log(chats)
+    const completion = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo-0301",
+      temperature: 0,
+      messages: chats
+    });
+
+    addChat(completion.data.choices[0].message)
+    console.log(chats)
     
-  //   console.log(completion.data.choices[0].message);
-  //   setMarkdown(textarea.value)
-  //   console.log(markdown())
-  // }
+    setMarkdown(completion.data.choices[0].message)
+  }
 
   return (
     <div class="form-control">
