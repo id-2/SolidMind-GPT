@@ -1,4 +1,4 @@
-import { Component, createResource, onMount } from 'solid-js';
+import { Component, createEffect, onMount } from 'solid-js';
 import { markdown, setMarkdown } from '~/root';
 import { Configuration, OpenAIApi } from 'openai';
 import { createStore, produce } from 'solid-js/store';
@@ -49,7 +49,6 @@ const inputText: Component = () => {
 
     addChat('assistant', completion.data.choices[0].message.content);
     setMarkdown(completion.data.choices[0].message.content);
-    console.log("Update editArea...");
 
     editedMindmap = false;
     updateEditArea();
@@ -61,10 +60,19 @@ const inputText: Component = () => {
     const editArea = document.querySelector('#editArea') as HTMLInputElement
     setMarkdown(editArea.value)
     editedMindmap = true;
-    console.log(editedMindmap);
   }
 
-  const updateEditArea = async () => {
+  const resizeEditArea = () => {
+    const textarea = document.querySelector(".autoresizing");
+    textarea.addEventListener('input', autoResize, false);
+          
+    function autoResize() {
+        this.style.height = 'auto';
+        this.style.height = this.scrollHeight + 'px';
+    }
+  }
+
+  const updateEditArea = () => {
     const editArea = document.querySelector('#editArea') as HTMLInputElement
     editArea.value = markdown();
     console.log(`This is the current markdown:\n${markdown()}`);
@@ -76,7 +84,8 @@ const inputText: Component = () => {
   }
 
   onMount(() => {
-    updateEditArea();
+    updateEditArea()
+    resizeEditArea()
   }); 
 
   return (
@@ -90,7 +99,7 @@ const inputText: Component = () => {
       <div class="flex-1">
         <textarea
           id="editArea"
-          class="w-full h-full border border-gray-400"
+          class="autoresizing w-full h-full border border-gray-400"
           value=""
           oninput={() => editHandler()}
         />
