@@ -20,7 +20,7 @@ function Mindmap() {
     });
 
     return (
-        <svg id="markmap" style="width: 100%; height: 100%"></svg>
+        <svg id="markmap" style="width: 100%; height: 50vh"></svg>
     );
 }
 
