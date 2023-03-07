@@ -28,12 +28,24 @@ const inputText: Component = () => {
     { role: 'system', content: system_prompt},
   ]);
 
+  if (typeof window !== 'undefined') {
+    const chatsFromLocalStorage = JSON.parse(localStorage.getItem('savedChats'))
+    if (chatsFromLocalStorage) {
+      setChats(chatsFromLocalStorage)
+      console.log("Chats from local storage")
+      console.log(chatsFromLocalStorage)
+    }
+  }
+
   const addChat = (role:string, text:string) => {
     setChats([...chats, { role: role, content: text }]);
   }
 
   let editedMindmap = false;
   const requestHandler = async () => {
+    const submitButton = document.getElementById("submitRequest")
+    submitButton.classList.add("loading")
+    submitButton.classList.add("btn-disabled")
     const gptInput = document.querySelector('#gptInput') as HTMLInputElement
     if (editedMindmap) {
       addChat('assistant', `This is the new mindmap to start from:\n${getEditArea()}`)
@@ -54,6 +66,8 @@ const inputText: Component = () => {
     editedMindmap = false;
     updateEditArea();
 
+    submitButton.classList.remove("loading")
+    submitButton.classList.remove("btn-disabled")
     gptInput.value = "";
   }
 
@@ -76,7 +90,6 @@ const inputText: Component = () => {
   const updateEditArea = () => {
     const editArea = document.querySelector('#editArea') as HTMLInputElement
     editArea.value = markdown();
-    console.log(`This is the current markdown:\n${markdown()}`);
   }
 
   const toggleEditArea = () => {
@@ -97,11 +110,17 @@ const inputText: Component = () => {
 
   const resetMindmap = () => {
     setMarkdown("");
+    setChats([{ role: 'system', content: system_prompt}]);
     updateEditArea();
+    localStorage.clear()
+
+    console.log(chats);
+    console.log(markdown());
   }
 
   const saveMindmap = () => {
     localStorage.setItem('savedMindmap', JSON.stringify(markdown()))
+    localStorage.setItem('savedChats', JSON.stringify(chats))
   }
 
   onMount(() => {
@@ -114,9 +133,7 @@ const inputText: Component = () => {
       <div class="flex my-5">
         <div class="input-group w-3/5">
           <input id="gptInput" type="text" placeholder="What is on your mind…" class="input input-bordered grow"/>
-          <button class="btn btn-square" onClick={() => requestHandler()}>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-          </button>
+          <button id="submitRequest" class="btn" onClick={() => requestHandler()}>Generate</button>
         </div>
         <label class="label cursor-pointer w-1/5 mx-5 justify-center">
           <span class="label-text mr-5">Edit mindmap</span> 
