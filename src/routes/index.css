@@ -38,10 +38,3 @@ p {
     max-width: none;
   }
 }
-
-.autoresizing {
-  display: block;
-  overflow: hidden;
-  resize: none;
-  height: 250px;
-}

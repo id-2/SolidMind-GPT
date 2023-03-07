@@ -63,7 +63,7 @@ const inputText: Component = () => {
   }
 
   const resizeEditArea = () => {
-    const textarea = document.querySelector(".autoresizing");
+    const textarea = document.querySelector("#editArea");
     textarea.addEventListener('input', autoResize, false);
           
     function autoResize() {
@@ -78,9 +78,29 @@ const inputText: Component = () => {
     console.log(`This is the current markdown:\n${markdown()}`);
   }
 
+  const toggleEditArea = () => {
+    const editArea = document.querySelector('#editArea') as HTMLInputElement
+    const toggle = document.querySelector('#editToggle') as HTMLInputElement
+    updateEditArea();
+    if (toggle.checked == true){
+      editArea.style.display = "block";
+    } else {
+      editArea.style.display = "none";
+    }
+  }
+
   const getEditArea = () => {
     const editArea = document.querySelector('#editArea') as HTMLInputElement
     return editArea.value;
+  }
+
+  const resetMindmap = () => {
+    setMarkdown("");
+    updateEditArea();
+  }
+
+  const saveMindmap = () => {
+    localStorage.setItem('savedMindmap', JSON.stringify(markdown()))
   }
 
   onMount(() => {
@@ -90,16 +110,27 @@ const inputText: Component = () => {
 
   return (
     <div class="form-control">
-      <div class="input-group justify-center">
-        <input id="gptInput" type="text" placeholder="What is on your mind…" class="input input-bordered w-1/3"/>
-        <button class="btn btn-square" onClick={() => requestHandler()}>
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-        </button>
+      <div class="flex my-5">
+        <div class="input-group w-3/5">
+          <input id="gptInput" type="text" placeholder="What is on your mind…" class="input input-bordered grow"/>
+          <button class="btn btn-square" onClick={() => requestHandler()}>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+          </button>
+        </div>
+        <label class="label cursor-pointer w-1/5 mx-5 justify-center">
+          <span class="label-text mr-5">Edit mindmap</span> 
+          <input type="checkbox" id="editToggle" class="toggle toggle-primary toggle-lg" onClick={() => toggleEditArea()}/>
+        </label>
+        <div class="input-group w-1/5">
+          <button class="btn btn-primary grow" onClick={() => saveMindmap()}>Save</button>
+          <button class="btn btn-primary grow" onClick={() => resetMindmap()}>Reset</button>
+        </div>
       </div>
+      
       <div class="flex-1">
         <textarea
           id="editArea"
-          class="autoresizing w-full h-full border border-gray-400"
+          class="textarea textarea-bordered hidden overflow-hidden resize-y w-full h-72"
           value=""
           oninput={() => editHandler()}
         />
