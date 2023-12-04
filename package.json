@@ -24,7 +24,7 @@
     "markmap-lib": "^0.14.4",
     "markmap-view": "^0.14.4",
     "openai": "^3.2.1",
-    "solid-js": "^1.6.0",
+    "solid-js": "^1.8.7",
     "solid-start": "^0.2.0",
     "undici": "^5.27.2"
   },
