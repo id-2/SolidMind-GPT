@@ -22,7 +22,7 @@
     "daisyui": "^2.50.2",
     "markmap-common": "^0.14.2",
     "markmap-lib": "^0.14.4",
-    "markmap-view": "^0.14.4",
+    "markmap-view": "^0.15.6",
     "openai": "^3.2.1",
     "solid-js": "^1.6.0",
     "solid-start": "^0.2.0",
